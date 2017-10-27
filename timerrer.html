@@ -1,0 +1,141 @@
+<html>
+  <head>
+    <style lang='scss'>
+
+  
+
+.red{
+  width:100px;
+  top:0;
+  height:30px;
+  background-color: red;
+  transition:.5s;
+}
+.green{
+  width:100px;
+  height:30px;
+  background-color: green;
+    transition:.5s;
+
+}
+.blue{
+  width:230px;
+  height:130px;
+  background-color: blue;
+    top:0;
+
+    transition:.5s;
+
+}
+.yellow{
+  width:230px;
+  height:130px;
+  background-color: yellow;
+    transition:.5s;
+
+}
+ .btns-panel{
+          display:inline-block;
+
+ }
+.playground{
+    display:block;
+    height:600px;
+     width:800px;
+     background-color: lightgoldenrodyellow;
+     overflow:hidden;
+     
+}
+.playground> div{
+    position:relative;
+}
+.go-down{
+    transform: translateY(200px);
+    top:200px;
+  }
+  .go-right{
+    transform: translateX(250px);
+  }
+  .go-left{
+    transform: translateX(-250px);
+  }
+  .go-up{
+    transform: translateY(-300px);
+  }
+  .scale-up{
+    transform: scale(2, 3);
+    transition: 2s;
+  }
+  .scale-down{
+    transform: scale(.5, .3);
+    transition: 2s;
+  }
+</style>
+  </head>
+  <body>
+    <div id="container">
+        <div class="btns-panel">
+           <button @click="timerrer()">timerer </button>
+            <button @click="timerrerReverse()">go back </button>
+            <button @click="counter.frame=0">immidiate </button>
+        </div>
+        <div class="playground">
+            <div  class="green ":class="{'go-right':counter.frame>10}"></div>
+            <div  class="blue" :class="{'go-down':counter.frame>40}"></div>
+            <div class="red" :class="[{'go-right':counter.frame>20},{'go-down':counter.frame>70}]"></div>
+            <div class="green" :class="[{'go-right':counter.frame>10},{'scale-up':counter.frame>30}]"></div>
+            <div  class="yellow" :class="[{'go-up':counter.frame>20 && counter.frame<90},{'scale-down':counter.frame>70}]"></div>
+
+        </div>
+    </div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.4.2/vue.min.js"></script> 
+<script>
+
+new Vue({
+    el: '#container',
+  name: 'parent',
+  data() {
+    return{
+      show:false,
+      after:false,
+      counter:{frame:0,length:2000}
+    }
+  },
+  created(){
+  },
+methods:{
+  startTimerrer(){
+    this.timerrer(this.counter)
+  },
+  timerrer(num){
+      var that = this;
+      var diff = this.counter.length/100;
+      
+      var myInterval= setInterval(function() {
+      if (that.counter.frame >=100){
+         clearInterval(myInterval);
+      }
+        that.counter.frame ++;
+        console.log(that.counter.frame);
+      },diff);
+  },
+  timerrerReverse(num){
+      var that = this;
+      var diff = this.counter.length/100;
+      
+      var myInterval= setInterval(function() {
+      if (that.counter.frame <=0){
+         clearInterval(myInterval);
+      }
+        that.counter.frame --;
+        console.log(that.counter.frame);
+      },diff);
+  },
+
+},
+})
+
+</script>
+    
+  </body>
+</html>
