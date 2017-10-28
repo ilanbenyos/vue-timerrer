@@ -1,9 +1,6 @@
 <html>
   <head>
     <style lang='scss'>
-
-  
-
 .red{
   width:100px;
   top:0;
@@ -77,7 +74,9 @@
         <div class="btns-panel">
            <button @click="timerrer()">timerer </button>
             <button @click="timerrerReverse()">go back </button>
-            <button @click="counter.frame=0">immidiate </button>
+            <button @click="counter.frame=0">immidiate start</button>
+            <button @click="counter.frame=100">immidiate end</button>
+
         </div>
         <div class="playground">
             <div  class="green ":class="{'go-right':counter.frame>10}"></div>
