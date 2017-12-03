@@ -21,7 +21,7 @@
   background-color: blue;
     top:0;
 
-    transition:.5s;
+    transition:.5s all;
 
 }
 .yellow{
@@ -84,7 +84,8 @@
     transition: 2s;
   }
   .border{
-    border:2px solid red;
+    border:32px solid red;
+    transition: 0.5s all;
   }
   
  
@@ -103,7 +104,7 @@
           <div class="playground" >
               <div class="fader" :class="{'fade':frame>10 }" ref="fader" > </div>
               <div class="green ":class="{'go-right':frame>0}"></div>
-              <div class="blue" :class="{'go-down':frame>40}" ref="blue"></div>
+              <div class="blue" :class="{'go-down':frame>23}" ref="blue"></div>
               <div class="green" :class="[{'go-right':frame>10},{'scale-up':frame>30}]"></div>
               <div class="red" :class="[{'go-right':frame>20 },
                                         {' go-down':frame>70}]"></div>
@@ -129,14 +130,16 @@ new Vue({
     this.counter = {
       frame:0,length:3000,
           actions:{
-          2:  (val)=>{console.log('val',val)},
-          34: (val)=>{console.log('val',val)},
-          65: (val)=>{console.log('this.$refs.blue',this.$refs.blue);
-                      this.$refs.blue.classlist.add('border')},
+          98: ()=>{this.$refs.blue.classList.remove('border')},
+          2:  (val)=>{console.log('val2',val)},
+          34: (val)=>{console.log('val34',val)},
+          24: ()=>{this.$refs.blue.classList.add('border')},
           12: (val)=>{console.log('val',val)},
           97: (val)=>{console.log('val',val)},
         }
       }
+      console.log('pppppp');
+      this.counter.actions[2]('rrr');
     this.timerrer(1);
   },
   computed:{
@@ -166,7 +169,7 @@ methods:{
   checkAction(counter,frame){
       if(counter.actions[frame]){
         // console.log('frame',frame);
-          counter.actions[frame];
+          counter.actions[frame](frame);
       }
   }
 
