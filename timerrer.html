@@ -29,23 +29,39 @@
   height:130px;
   background-color: yellow;
     transition:.5s;
-
+    top:200px;
+    left:100px;
 }
  .btns-panel{
-          display:inline-block;
+   display:block;
+   position: relative;
+   margin-bottom: 20px;
 
  }
 .playground{
     display:block;
     height:600px;
-     width:800px;
-     background-color: lightgoldenrodyellow;
-     overflow:hidden;
-     
+    width:800px;
+    overflow:hidden; 
+    position: relative;
 }
-.playground> div{
-    position:relative;
+.playground *{
+      position:absolute;
+      display: block;
+  }
+.fader{
+    top:0;
+    opacity: 1;
+    background-color: black;
+    transition: 2s;
+    position:absolute;
+    width:100%;
+    height:100%
 }
+.fade{
+    opacity:0;
+  }
+
 .go-down{
     transform: translateY(200px);
     top:200px;
@@ -67,69 +83,92 @@
     transform: scale(.5, .3);
     transition: 2s;
   }
+  .border{
+    border:2px solid red;
+  }
+  
+ 
 </style>
   </head>
   <body>
-    <div id="container">
-        <div class="btns-panel">
-           <button @click="timerrer()">timerer </button>
-            <button @click="timerrerReverse()">go back </button>
+    <div id="app">
+      <div class="container" >
+          <div class="btns-panel">
+            <button @click="timerrer()">timerer </button>
+            <button @click="timerrer(-1)">go back </button>
             <button @click="counter.frame=0">immidiate start</button>
             <button @click="counter.frame=100">immidiate end</button>
 
-        </div>
-        <div class="playground">
-            <div  class="green ":class="{'go-right':counter.frame>10}"></div>
-            <div  class="blue" :class="{'go-down':counter.frame>40}"></div>
-            <div class="red" :class="[{'go-right':counter.frame>20},{'go-down':counter.frame>70}]"></div>
-            <div class="green" :class="[{'go-right':counter.frame>10},{'scale-up':counter.frame>30}]"></div>
-            <div  class="yellow" :class="[{'go-up':counter.frame>20 && counter.frame<90},{'scale-down':counter.frame>70}]"></div>
+          </div>
+          <div class="playground" >
+              <div class="fader" :class="{'fade':frame>10 }" ref="fader" > </div>
+              <div class="green ":class="{'go-right':frame>0}"></div>
+              <div class="blue" :class="{'go-down':frame>40}" ref="blue"></div>
+              <div class="green" :class="[{'go-right':frame>10},{'scale-up':frame>30}]"></div>
+              <div class="red" :class="[{'go-right':frame>20 },
+                                        {' go-down':frame>70}]"></div>
 
+              <div  class="yellow" :class="[{'go-down':frame>20 && frame<60},{' scale-down':frame>40}]"></div>
+          </div>
         </div>
     </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.4.2/vue.min.js"></script> 
 <script>
 
 new Vue({
-    el: '#container',
+    el: '#app',
   name: 'parent',
   data() {
     return{
       show:false,
       after:false,
-      counter:{frame:0,length:2000}
+      counter:{},
     }
   },
-  created(){
+  mounted(){
+    this.counter = {
+      frame:0,length:3000,
+          actions:{
+          2:  (val)=>{console.log('val',val)},
+          34: (val)=>{console.log('val',val)},
+          65: (val)=>{console.log('this.$refs.blue',this.$refs.blue);
+                      this.$refs.blue.classlist.add('border')},
+          12: (val)=>{console.log('val',val)},
+          97: (val)=>{console.log('val',val)},
+        }
+      }
+    this.timerrer(1);
+  },
+  computed:{
+      frame(){
+        return this.counter.frame
+      }
   },
 methods:{
-  startTimerrer(){
-    this.timerrer(this.counter)
-  },
-  timerrer(num){
+  
+  timerrer(direction=1){
+    var counter = this.counter;
+    console.log('counter',counter);
       var that = this;
-      var diff = this.counter.length/100;
-      
+      var diff = counter.length/100;
       var myInterval= setInterval(function() {
-      if (that.counter.frame >=100){
+      var frame = counter.frame;
+      if (frame >=100 && direction >0 ||
+         frame <=0 && direction <0  ){
          clearInterval(myInterval);
+      }else{
+        counter.frame +=direction;
+        that.checkAction(counter,frame);
+        console.log(frame);
       }
-        that.counter.frame ++;
-        console.log(that.counter.frame);
       },diff);
   },
-  timerrerReverse(num){
-      var that = this;
-      var diff = this.counter.length/100;
-      
-      var myInterval= setInterval(function() {
-      if (that.counter.frame <=0){
-         clearInterval(myInterval);
+  checkAction(counter,frame){
+      if(counter.actions[frame]){
+        // console.log('frame',frame);
+          counter.actions[frame];
       }
-        that.counter.frame --;
-        console.log(that.counter.frame);
-      },diff);
-  },
+  }
 
 },
 })

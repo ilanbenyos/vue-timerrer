@@ -1,0 +1,23 @@
+{
+  "name": "timerrer",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "rxjs-es": "^5.0.0-beta.12"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ilanbenyos/vue-timerrer.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ilanbenyos/vue-timerrer/issues"
+  },
+  "homepage": "https://github.com/ilanbenyos/vue-timerrer#readme"
+}
